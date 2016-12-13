@@ -1,6 +1,6 @@
 # flask-restful-oauth2
 
-A Flask service to export PDF and XML reports.
+A Flask REST endpoint protected by OAuth2.
 
 ## Installation
 
