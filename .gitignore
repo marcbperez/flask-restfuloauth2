@@ -1,1 +1,10 @@
-
+*.egg-info
+*.pyc
+*.sqlite3
+.cache
+.coverage
+.eggs
+.gradle
+htmlcov
+venv
+__pycache__
