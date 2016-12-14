@@ -1,0 +1,78 @@
+defaultTasks "watch", "build", "install", "test"
+
+def path = System.getProperty("user.dir")
+def srcDir = "${path}/restfuloauth2"
+def testDir = "${path}/tests"
+def aptPackages = ["python-pip", "pandoc"]
+
+task watch(type: Exec) {
+  def sourceFiles = fileTree(srcDir) {
+    exclude "**/*.pyc"
+  }
+
+  def testFiles = fileTree(testDir) {
+    exclude "**/*.pyc", "**/__pycache__"
+  }
+
+  description "Watches for canges, use 'gradle --continuous'."
+  inputs.files(sourceFiles, testFiles)
+  commandLine "true"
+
+  new ByteArrayOutputStream()
+}
+
+task dependencies() {
+  description "Installs all dependencies."
+
+  dependsOn {
+    tasks.findAll { task ->
+      task.name.startsWith("dependencies") && !task.name.equals("dependencies")
+    }
+  }
+}
+
+task dependenciesApt(type: Exec) {
+  description "Installs APT dependencies."
+  workingDir path
+  commandLine "apt-get"
+  args = ["install", "-y"] + aptPackages
+
+  new ByteArrayOutputStream()
+}
+
+task build() {
+  description "Builds all sources."
+
+  dependsOn {
+    tasks.findAll { task ->
+      task.name.startsWith("build") && !task.name.equals("build")
+    }
+  }
+}
+
+task buildReadme(type: Exec) {
+  description "Converts README.md to reStructuredText."
+  workingDir path
+  commandLine "pandoc"
+  args = ["--from=markdown", "--to=rst", "--output=README.rst", "README.md"]
+
+  new ByteArrayOutputStream()
+}
+
+task install(type: Exec) {
+  description "Installs this Python module."
+  workingDir path
+  commandLine "pip"
+  args = ["install", "-e", "."]
+
+  new ByteArrayOutputStream()
+}
+
+task test(type: Exec) {
+  description "Tests this Python module."
+  workingDir path
+  commandLine "python"
+  args = ["setup.py", "test"]
+
+  new ByteArrayOutputStream()
+}
