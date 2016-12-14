@@ -1,0 +1,4 @@
+include LICENSE
+include README.rst
+recursive-include restfuloauth2/oauth/templates *
+recursive-include docs *
