@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="My website containing contact information and a blog">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>marcbperez</title>
+
+    <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.teal-red.min.css">
+
+    <style>
+    .mdl-layout__content {
+      padding-bottom: 50px;
+    }
+
+    .mdl-data-table {
+      max-width: 900px;
+    }
+
+    .mdl-button {
+      margin-bottom: 30px;
+    }
+
+    .mdl-textfield {
+      margin-left: 20px;
+      max-width: 200px;
+      position:relative;
+      top: -15px;
+    }
+    </style>
+  </head>
+  <body>
+    <div class="mdl-layout mdl-js-layout mdl-color--grey-100">
+      <main class="mdl-layout__content">
+
+        <div class="mdl-grid">
+          <div class="mdl-cell mdl-cell--12-col">
+            <h2>Users ({{ users|length }})</h2>
+            <form method="post" action="{{ url_for('oauth.management') }}">
+              <input type="submit" name='submit' value='Add User'
+              class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+              <div class="mdl-textfield mdl-js-textfield">
+                <input class="mdl-textfield__input" type="text" id="username" name="username" required>
+                <label class="mdl-textfield__label" for="username">Username</label>
+              </div>
+              <div class="mdl-textfield mdl-js-textfield">
+                <input class="mdl-textfield__input" type="password" id="password" name="password" required>
+                <label class="mdl-textfield__label" for="password">Password</label>
+              </div>
+            </form>
+            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th class="mdl-data-table__cell--non-numeric">Username</th>
+                  <th class="mdl-data-table__cell--non-numeric">Password Hash</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for user in users %}
+                <tr>
+                  <td>{{ user.id }}</td>
+                  <td class="mdl-data-table__cell--non-numeric">{{ user.username }}</td>
+                  <td class="mdl-data-table__cell--non-numeric">{{ user.hashpw }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="mdl-grid">
+          <div class="mdl-cell mdl-cell--12-col">
+            <h2>Clients ({{ clients|length }})</h2>
+            <form method="post" action="{{ url_for('oauth.management') }}">
+              <input type="submit" name='submit' value='Add Client'
+              class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+            </form>
+            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+              <thead>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">ID</th>
+                  <th class="mdl-data-table__cell--non-numeric">Type</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for client in clients %}
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">{{ client.client_id }}</td>
+                  <td class="mdl-data-table__cell--non-numeric">{{ client.client_type }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </main>
+    </div>
+
+    <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+  </body>
+</html>
