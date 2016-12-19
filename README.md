@@ -1,6 +1,6 @@
 # flask-restful-oauth2
 
-A Flask REST endpoint protected by OAuth2.
+A Flask REST endpoint protected with OAuth2.
 
 ## Installation
 

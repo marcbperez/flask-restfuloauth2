@@ -5,6 +5,7 @@ import restfuloauth2
 @pytest.fixture
 def client(request):
     restfuloauth2.app.config['TESTING'] = True
+    restfuloauth2.app.config['SECRET_KEY'] = 'testing-key'
     client = restfuloauth2.app.test_client()
 
     return client
