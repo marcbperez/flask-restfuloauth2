@@ -2,7 +2,11 @@ import os
 
 
 class base_config(object):
-    SECRET_KEY = os.environ['SECRET_KEY']
+    try:
+        SECRET_KEY = os.environ['SECRET_KEY']
+    except Exception as e:
+        pass
+     
     SQLALCHEMY_DATABASE_URI = 'sqlite:///db.sqlite3'
 
 

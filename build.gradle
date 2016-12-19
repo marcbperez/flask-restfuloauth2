@@ -1,9 +1,9 @@
-defaultTasks "watch", "build", "install", "test"
+defaultTasks "watch", "dependencies", "build", "install", "test"
 
 def path = System.getProperty("user.dir")
 def srcDir = "${path}/restfuloauth2"
 def testDir = "${path}/tests"
-def aptPackages = ["python-pip", "pandoc"]
+def aptPackages = ["python-pip", "pandoc", "libssl-dev", "libffi-dev"]
 
 task watch(type: Exec) {
   def sourceFiles = fileTree(srcDir) {
@@ -11,7 +11,7 @@ task watch(type: Exec) {
   }
 
   def testFiles = fileTree(testDir) {
-    exclude "**/*.pyc", "**/__pycache__"
+    exclude "**/*.pyc", "**/__pycache__/*"
   }
 
   description "Watches for canges, use 'gradle --continuous'."
@@ -59,7 +59,14 @@ task buildReadme(type: Exec) {
   new ByteArrayOutputStream()
 }
 
-task install(type: Exec) {
+task upgradePip(type: Exec) {
+  description "Upgrades PIP to the latest version."
+  workingDir path
+  commandLine "pip"
+  args = ["install", "--upgrade", "pip"]
+}
+
+task install(type: Exec, dependsOn: upgradePip) {
   description "Installs this Python module."
   workingDir path
   commandLine "pip"

@@ -1,7 +1,7 @@
 flask-restful-oauth2
 ====================
 
-A Flask REST endpoint protected by OAuth2.
+A Flask REST endpoint protected with OAuth2.
 
 Installation
 ------------
@@ -38,19 +38,47 @@ at ``http://localhost:5000``.
     sudo -HE gradle
     sudo -HE flask run
 
-Reports can be exported to PDF and XML. There are also service actions
-to get a list of available reports in HTML and XML format.
+First, access ``http://127.0.0.1:5000`` and create a user and api
+client. Then use the client id, username and password to generate a
+bearer token.
 
--  ``http://localhost:5000/`` and ``http://localhost:5000/report`` show
-   a list of the reports and its links.
--  ``http://localhost:5000/report/list.xml`` offers the same list in XML
-   format.
--  ``http://localhost:5000/report/<report_id>`` shows the report in
-   HTML.
--  ``http://localhost:5000/report/<report_id>.pdf`` shows the report in
-   PDF.
--  ``http://localhost:5000/report/<report_id>.xml`` shows the report in
-   XML.
+.. code:: bash
+
+    curl -X POST -d \
+    "grant_type=password&client_id=8diLQbKSkseuZ99Q3kwFAWugXjDvImrqTALeM7sd\
+    &username=user&password=pass" \
+    http://127.0.0.1:5000/oauth/token
+
+The bearer token can now be used to access the user's protected data.
+
+.. code:: bash
+
+    curl -H "Authorization: Bearer nOVFSNUDoP2bC1ScMRuYz8zCXeTY8F" \
+    http://127.0.0.1:5000/oauth/check
+
+The example todo api is protected and will need a valid user, client and
+bearer token. To list, add, modify and delete tasks see the script
+below.
+
+.. code:: bash
+
+    # GET the todo list
+    curl -H "Authorization: Bearer nOVFSNUDoP2bC1ScMRuYz8zCXeTY8F" \
+    http://127.0.0.1:5000/todo
+    # CREATE a new todo
+    curl -X POST -H "Authorization: Bearer nOVFSNUDoP2bC1ScMRuYz8zCXeTY8F" \
+    -d "description=Remember the bread" \
+    http://127.0.0.1:5000/todo
+    # MODIFY a todo
+    curl -X PUT -H "Authorization: Bearer nOVFSNUDoP2bC1ScMRuYz8zCXeTY8F" \
+    -d "description=Remember the butter" \
+    http://127.0.0.1:5000/todo/1
+    # GET a todo
+    curl -H "Authorization: Bearer nOVFSNUDoP2bC1ScMRuYz8zCXeTY8F" \
+    http://127.0.0.1:5000/todo/1
+    # DELETE a todo
+    curl -X DELETE -H "Authorization: Bearer nOVFSNUDoP2bC1ScMRuYz8zCXeTY8F" \
+    http://127.0.0.1:5000/todo/1
 
 Testing
 -------
