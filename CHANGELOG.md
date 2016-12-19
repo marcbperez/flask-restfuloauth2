@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file. This
 project adheres to [Semantic Versioning](http://semver.org).
 
+## 0.5.1 - 2016-12-19
+
+### Fixed
+
+  - Gradle build script.
+  - README project information and usage.
+  - Test and configuration environment variables.
+
 ## 0.5.0 - 2016-12-17
 
 ### Added
