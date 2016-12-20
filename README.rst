@@ -1,5 +1,5 @@
-flask-restful-oauth2
-====================
+flask-restfuloauth2
+===================
 
 A Flask REST endpoint protected with OAuth2.
 
@@ -16,7 +16,7 @@ the following commands:
     sudo apt-get install software-properties-common
     sudo add-apt-repository ppa:cwchien/gradle
     sudo apt-get update
-    sudo apt-get install default-jdk gradle=3.4-0ubuntu1
+    sudo apt-get install default-jdk gradle-3.4
 
 If you prefer to install Docker and docker-compose (highly recommended)
 refer to the `official
@@ -31,8 +31,8 @@ at ``http://localhost:5000``.
 
 .. code:: bash
 
-    git clone https://github.com/marcbperez/flask-restful-oauth2
-    cd flask-restful-oauth2
+    git clone https://github.com/marcbperez/flask-restfuloauth2
+    cd flask-restfuloauth2
     export FLASK_APP="restfuloauth2"
     export SECRET_KEY="non-production-key"
     sudo -HE gradle
@@ -104,10 +104,10 @@ Troubleshooting
 ---------------
 
 The `issue
-tracker <https://github.com/marcbperez/flask-restful-oauth2/issues>`__
-intends to manage and compile bugs, enhancements, proposals and tasks.
-Reading through its material or reporting to its contributors via the
-platform is strongly recommended.
+tracker <https://github.com/marcbperez/flask-restfuloauth2/issues>`__ intends
+to manage and compile bugs, enhancements, proposals and tasks. Reading
+through its material or reporting to its contributors via the platform
+is strongly recommended.
 
 Contributing
 ------------

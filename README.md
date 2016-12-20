@@ -1,4 +1,4 @@
-# flask-restful-oauth2
+# flask-restfuloauth2
 
 A Flask REST endpoint protected with OAuth2.
 
@@ -12,7 +12,7 @@ distributions Gradle can be installed with the following commands:
 sudo apt-get install software-properties-common
 sudo add-apt-repository ppa:cwchien/gradle
 sudo apt-get update
-sudo apt-get install default-jdk gradle=3.4-0ubuntu1
+sudo apt-get install default-jdk gradle-3.4
 ```
 
 If you prefer to install Docker and docker-compose (highly recommended) refer to
@@ -25,8 +25,8 @@ environment variables and run flask. The service will be available at
 `http://localhost:5000`.
 
 ```bash
-git clone https://github.com/marcbperez/flask-restful-oauth2
-cd flask-restful-oauth2
+git clone https://github.com/marcbperez/flask-restfuloauth2
+cd flask-restfuloauth2
 export FLASK_APP="restfuloauth2"
 export SECRET_KEY="non-production-key"
 sudo -HE gradle
@@ -121,7 +121,7 @@ This project is created by [marcbperez][author] and maintained by its
 This project is licensed under the [Apache License Version 2.0][license].
 
 [author]: https://marcbperez.github.io
-[issue-tracker]: https://github.com/marcbperez/flask-restful-oauth2/issues
+[issue-tracker]: https://github.com/marcbperez/flask-restfuloauth2/issues
 [editorconfig]: .editorconfig
 [changelog]: CHANGELOG.md
 [license]: LICENSE
