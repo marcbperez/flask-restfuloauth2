@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file. This
 project adheres to [Semantic Versioning](http://semver.org).
 
+## 0.5.2 - 2016-12-20
+
+### Fixed
+
+  - Project name as flask-restfuloauth2.
+
 ## 0.5.1 - 2016-12-19
 
 ### Fixed
