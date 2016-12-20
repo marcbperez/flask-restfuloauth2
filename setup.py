@@ -10,14 +10,14 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 # Main setup and configuration.
 setup(
-    name='flask-restful-oauth2',
-    version='0.5.1',
+    name='flask-restfuloauth2',
+    version='0.5.2',
     packages=find_packages(),
     include_package_data=True,
     license='Apache License Version 2.0',
     description='A Flask REST endpoint protected with OAuth2.',
     long_description=README,
-    url='https://github.com/marcbperez/flask-restful-oauth2',
+    url='https://github.com/marcbperez/flask-restfuloauth2',
     author='marcbperez',
     author_email='marcbperez@users.noreply.github.com',
     install_requires=[
