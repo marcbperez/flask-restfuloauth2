@@ -74,7 +74,7 @@ class Client(db.Model):
 class Token(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     client_id = db.Column(db.String(40), db.ForeignKey('client.client_id'),
-                          nullable=False)
+        nullable=False)
     client = db.relationship('Client')
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     user = db.relationship('User')
@@ -87,6 +87,10 @@ class Token(db.Model):
     def delete(self):
         db.session.delete(self)
         db.session.commit()
+
+    @staticmethod
+    def all():
+        return Token.query.all()
 
     @staticmethod
     def find(access_token=None, refresh_token=None):

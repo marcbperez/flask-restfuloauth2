@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file. This
 project adheres to [Semantic Versioning](http://semver.org).
 
+## Unreleased
+
+### Added
+
+  - Basic static files and module.
+  - Pagination and sorting for API.
+  - Token creation tests.
+  - Owner-only access to data for API.
+
+### Fixed
+
+  - Management template.
+  - Sqlite files not ignored on build.
+
 ## 0.5.2 - 2016-12-20
 
 ### Fixed
