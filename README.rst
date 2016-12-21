@@ -65,13 +65,16 @@ below.
     # GET the todo list
     curl -H "Authorization: Bearer nOVFSNUDoP2bC1ScMRuYz8zCXeTY8F" \
     http://127.0.0.1:5000/todo
+    # Paginate and sort de todo list by ascending (asc) or descending (desc)
+    curl -H "Authorization: Bearer nOVFSNUDoP2bC1ScMRuYz8zCXeTY8F" \
+    "http://127.0.0.1:5000/todo?page=1&max_results=5&sort=id-desc"
     # CREATE a new todo
     curl -X POST -H "Authorization: Bearer nOVFSNUDoP2bC1ScMRuYz8zCXeTY8F" \
-    -d "description=Remember the bread" \
+    -d "description=Remember the bread&public=0&done=0" \
     http://127.0.0.1:5000/todo
     # MODIFY a todo
     curl -X PUT -H "Authorization: Bearer nOVFSNUDoP2bC1ScMRuYz8zCXeTY8F" \
-    -d "description=Remember the butter" \
+    -d "description=Remember the butter&public=0&done=1" \
     http://127.0.0.1:5000/todo/1
     # GET a todo
     curl -H "Authorization: Bearer nOVFSNUDoP2bC1ScMRuYz8zCXeTY8F" \
