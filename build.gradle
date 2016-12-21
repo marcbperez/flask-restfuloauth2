@@ -7,7 +7,7 @@ def aptPackages = ["python-pip", "pandoc", "libssl-dev", "libffi-dev"]
 
 task watch(type: Exec) {
   def sourceFiles = fileTree(srcDir) {
-    exclude "**/*.pyc"
+    exclude "**/*.pyc", "**/*.sqlite*"
   }
 
   def testFiles = fileTree(testDir) {
