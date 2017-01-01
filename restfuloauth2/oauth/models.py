@@ -1,3 +1,4 @@
+from flask import request
 from datetime import datetime, timedelta
 from werkzeug.security import gen_salt
 from ..database import db
@@ -34,6 +35,11 @@ class User(db.Model):
     def all():
         return User.query.all()
 
+    @staticmethod
+    def get_authorized():
+        access_token = request.oauth.headers.get('Authorization').split(' ')[1]
+        token = Token.find(access_token)
+        return token.user
 
 class Client(db.Model):
     client_id = db.Column(db.String(40), primary_key=True)

@@ -1,20 +1,15 @@
-.mdl-layout__content {
-  padding-bottom: 50px;
-}
-
-.mdl-data-table {
-  max-width: 900px;
-}
-
-.mdl-button {
-  margin-bottom: 30px;
+form {
+  text-align: center;
 }
 
 .mdl-textfield {
-  max-width: 200px;
-  margin-right: 20px;
+  margin: 0 10px 0 10px;
 }
 
-h3 {
-  margin-bottom: 10;
+.mdl-button {
+  margin-bottom: 20px;
+}
+
+.mdl-data-table {
+  margin: auto;
 }
