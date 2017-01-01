@@ -19,94 +19,103 @@
     <div class="mdl-layout mdl-js-layout mdl-color--grey-100">
       <main class="mdl-layout__content">
 
-        <div class="mdl-grid">
-          <div class="mdl-cell mdl-cell--12-col">
-            <h3>Users ({{ users|length }})</h3>
-            <form method="post" action="{{ url_for('oauth.management') }}">
-              <div class="mdl-textfield mdl-js-textfield">
-                <input class="mdl-textfield__input" type="text" id="username" name="username" required>
-                <label class="mdl-textfield__label" for="username">Username</label>
-              </div>
-              <div class="mdl-textfield mdl-js-textfield">
-                <input class="mdl-textfield__input" type="password" id="password" name="password" required>
-                <label class="mdl-textfield__label" for="password">Password</label>
-              </div>
-              <br/>
-              <input type="submit" name='submit' value='Add User'
-              class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
-            </form>
-            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
-              <thead>
-                <tr>
-                  <th class="mdl-data-table__cell--non-numeric">ID</th>
-                  <th class="mdl-data-table__cell--non-numeric">Username</th>
-                  <th class="mdl-data-table__cell--non-numeric">Password Hash</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for user in users %}
-                <tr>
-                  <td class="mdl-data-table__cell--non-numeric">{{ user.id }}</td>
-                  <td class="mdl-data-table__cell--non-numeric">{{ user.username }}</td>
-                  <td class="mdl-data-table__cell--non-numeric">{{ user.hashpw }}</td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
+        <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+          <div class="mdl-tabs__tab-bar">
+            <a href="#users" class="mdl-tabs__tab is-active">Users ({{ users|length }})</a>
+            <a href="#clients" class="mdl-tabs__tab">Clients ({{ clients|length }})</a>
+            <a href="#tokens" class="mdl-tabs__tab">Tokens ({{ tokens|length }})</a>
           </div>
-        </div>
-
-        <div class="mdl-grid">
-          <div class="mdl-cell mdl-cell--12-col">
-            <h3>Clients ({{ clients|length }})</h3>
-            <form method="post" action="{{ url_for('oauth.management') }}">
-              <input type="submit" name='submit' value='Add Client'
-              class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
-            </form>
-            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
-              <thead>
-                <tr>
-                  <th class="mdl-data-table__cell--non-numeric">ID</th>
-                  <th class="mdl-data-table__cell--non-numeric">Type</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for client in clients %}
-                <tr>
-                  <td class="mdl-data-table__cell--non-numeric">{{ client.client_id }}</td>
-                  <td class="mdl-data-table__cell--non-numeric">{{ client.client_type }}</td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
+          <div class="mdl-tabs__panel is-active" id="users">
+            <div class="mdl-grid">
+              <div class="mdl-cell mdl-cell--2-col"></div>
+              <div class="mdl-cell mdl-cell--8-col">
+                <form method="post" action="{{ url_for('oauth.management') }}">
+                  <div class="mdl-textfield mdl-js-textfield">
+                    <input class="mdl-textfield__input" type="text" id="username" name="username" required>
+                    <label class="mdl-textfield__label" for="username">Username</label>
+                  </div>
+                  <div class="mdl-textfield mdl-js-textfield">
+                    <input class="mdl-textfield__input" type="password" id="password" name="password" required>
+                    <label class="mdl-textfield__label" for="password">Password</label>
+                  </div>
+                  <br/>
+                  <input type="submit" name='submit' value='Add User'
+                  class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+                </form>
+                <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+                  <thead>
+                    <tr>
+                      <th class="mdl-data-table__cell--non-numeric">ID</th>
+                      <th class="mdl-data-table__cell--non-numeric">Username</th>
+                      <th class="mdl-data-table__cell--non-numeric">Password Hash</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for user in users %}
+                    <tr>
+                      <td class="mdl-data-table__cell--non-numeric">{{ user.id }}</td>
+                      <td class="mdl-data-table__cell--non-numeric">{{ user.username }}</td>
+                      <td class="mdl-data-table__cell--non-numeric">{{ user.hashpw }}</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
-        </div>
-
-        <div class="mdl-grid">
-          <div class="mdl-cell mdl-cell--12-col">
-            <h3>Tokens ({{ tokens|length }})</h3>
-            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
-              <thead>
-                <tr>
-                  <th class="mdl-data-table__cell--non-numeric">ID</th>
-                  <th class="mdl-data-table__cell--non-numeric">Type</th>
-                  <th class="mdl-data-table__cell--non-numeric">User ID</th>
-                  <th class="mdl-data-table__cell--non-numeric">Client ID</th>
-                  <th class="mdl-data-table__cell--non-numeric">Expires</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for token in tokens %}
-                <tr>
-                  <td class="mdl-data-table__cell--non-numeric">{{ token.id }}</td>
-                  <td class="mdl-data-table__cell--non-numeric">{{ token.token_type }}</td>
-                  <td class="mdl-data-table__cell--non-numeric">{{ token.user_id }}</td>
-                  <td class="mdl-data-table__cell--non-numeric">{{ token.client_id }}</td>
-                  <td class="mdl-data-table__cell--non-numeric">{{ token.expires }}</td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
+          <div class="mdl-tabs__panel" id="clients">
+            <div class="mdl-grid">
+              <div class="mdl-cell mdl-cell--2-col"></div>
+              <div class="mdl-cell mdl-cell--8-col">
+                <form method="post" action="{{ url_for('oauth.management') }}">
+                  <input type="submit" name='submit' value='Add Client'
+                  class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+                </form>
+                <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+                  <thead>
+                    <tr>
+                      <th class="mdl-data-table__cell--non-numeric">ID</th>
+                      <th class="mdl-data-table__cell--non-numeric">Type</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for client in clients %}
+                    <tr>
+                      <td class="mdl-data-table__cell--non-numeric">{{ client.client_id }}</td>
+                      <td class="mdl-data-table__cell--non-numeric">{{ client.client_type }}</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="mdl-tabs__panel" id="tokens">
+            <div class="mdl-grid">
+              <div class="mdl-cell mdl-cell--2-col"></div>
+              <div class="mdl-cell mdl-cell--8-col">
+                <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+                  <thead>
+                    <tr>
+                      <th class="mdl-data-table__cell--non-numeric">ID</th>
+                      <th class="mdl-data-table__cell--non-numeric">User ID</th>
+                      <th class="mdl-data-table__cell--non-numeric">Client ID</th>
+                      <th class="mdl-data-table__cell--non-numeric">Expires</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for token in tokens %}
+                    <tr>
+                      <td class="mdl-data-table__cell--non-numeric">{{ token.id }}</td>
+                      <td class="mdl-data-table__cell--non-numeric">{{ token.user_id }}</td>
+                      <td class="mdl-data-table__cell--non-numeric">{{ token.client_id }}</td>
+                      <td class="mdl-data-table__cell--non-numeric">{{ token.expires }}</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
         </div>
 
