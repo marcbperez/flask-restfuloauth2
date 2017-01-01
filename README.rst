@@ -27,7 +27,7 @@ Usage
 
 To start the service get the project and install its dependencies, set
 the environment variables and run flask. The service will be available
-at ``http://localhost:5000``.
+at ``http://127.0.0.1:5000``.
 
 .. code:: bash
 
@@ -63,24 +63,26 @@ below.
 .. code:: bash
 
     # GET the todo list
-    curl -H "Authorization: Bearer nOVFSNUDoP2bC1ScMRuYz8zCXeTY8F" \
+    curl -H "Authorization: Bearer yIMqTV5zOGQlRpIMBMpZnyHFMR0QW3" \
     http://127.0.0.1:5000/todo
     # Paginate and sort de todo list by ascending (asc) or descending (desc)
-    curl -H "Authorization: Bearer nOVFSNUDoP2bC1ScMRuYz8zCXeTY8F" \
+    curl -H "Authorization: Bearer yIMqTV5zOGQlRpIMBMpZnyHFMR0QW3" \
     "http://127.0.0.1:5000/todo?page=1&max_results=5&sort=id-desc"
     # CREATE a new todo
-    curl -X POST -H "Authorization: Bearer nOVFSNUDoP2bC1ScMRuYz8zCXeTY8F" \
+    curl -X POST -H "Authorization: Bearer yIMqTV5zOGQlRpIMBMpZnyHFMR0QW3" \
     -d "description=Remember the bread&public=0&done=0" \
     http://127.0.0.1:5000/todo
-    # MODIFY a todo
-    curl -X PUT -H "Authorization: Bearer nOVFSNUDoP2bC1ScMRuYz8zCXeTY8F" \
-    -d "description=Remember the butter&public=0&done=1" \
+    # MODIFY a todo stating its etag
+    curl -X PUT -H "Authorization: Bearer yIMqTV5zOGQlRpIMBMpZnyHFMR0QW3" \
+    -d "etag=rz05FPx8qOIYJdmYZNLvcWupzh9qLlSoZnphpBFC\
+        &description=Remember the butter&public=0&done=1" \
     http://127.0.0.1:5000/todo/1
     # GET a todo
-    curl -H "Authorization: Bearer nOVFSNUDoP2bC1ScMRuYz8zCXeTY8F" \
+    curl -H "Authorization: Bearer yIMqTV5zOGQlRpIMBMpZnyHFMR0QW3" \
     http://127.0.0.1:5000/todo/1
-    # DELETE a todo
-    curl -X DELETE -H "Authorization: Bearer nOVFSNUDoP2bC1ScMRuYz8zCXeTY8F" \
+    # DELETE a todo stating its etag
+    curl -X DELETE -H "Authorization: Bearer yIMqTV5zOGQlRpIMBMpZnyHFMR0QW3" \
+    -d "etag=DMwVytdmg3CtwDgbm9wWOINjX73Iev2n4NFkRsV7" \
     http://127.0.0.1:5000/todo/1
 
 Testing
