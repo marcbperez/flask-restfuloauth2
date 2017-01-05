@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. This
 project adheres to [Semantic Versioning](http://semver.org).
 
+## 0.8.0 - 2017-01-05
+
+### Added
+
+  - Complex query feature for list endpoints.
+  - Query feature information and usage on README.
+
 ## 0.7.0 - 2017-01-01
 
 ### Added

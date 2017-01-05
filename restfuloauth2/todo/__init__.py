@@ -1,8 +1,10 @@
 from ..database import db
 from ..oauth.models import User
-from flask_restful import reqparse
+from flask_restful import reqparse, abort
 from werkzeug.security import gen_salt
 from datetime import datetime
+from sqlalchemy import text
+import json
 
 
 class Todo(db.Model):
@@ -70,15 +72,49 @@ class Todo(db.Model):
 
     @staticmethod
     def get_permitted_todo(todo_id, user):
-        return Todo.query.filter(Todo.id == todo_id and ((Todo.public) |
+        return Todo.query.filter(Todo.id == todo_id, ((Todo.public) |
             (Todo.user_id == user.id))).first()
 
     @staticmethod
-    def get_permitted_todos(user, sort_direction_attribute, page, max_results):
-        return Todo.query.filter(
-            (Todo.public) | (Todo.user_id == user.id)).order_by(
-            sort_direction_attribute).paginate(int(page), int(max_results),
-            error_out=False).items
+    def get_permitted_todos(user, sort_direction, page, max_results, query):
+        items = Todo.query.filter((Todo.public) | (Todo.user_id == user.id))
+
+        if query:
+            text_query = Todo.query_from_json(json.loads(query))
+            items.filter(text(text_query))
+
+        return items.order_by(sort_direction).paginate(int(page), \
+            int(max_results), error_out=False).items
+
+    @staticmethod
+    def valid_condition_operator(operator):
+        return operator in ['and', 'or']
+
+    @staticmethod
+    def valid_column_operator(operator):
+        return operator in ['=', '!=', '<', '<=', '>', '>=', 'like']
+
+    @staticmethod
+    def query_from_json(data):
+        if 'column' in data and 'operator' in data and 'value' in data:
+            if not Todo.valid_column_operator(data['operator']):
+                abort(401, message="Invalid operator")
+            return data['column'] + data['operator'] + str(data['value'])
+
+        elif 'conditions' in data and 'operator' in data:
+            if not Todo.valid_condition_operator(data['operator']):
+                abort(401, message="Invalid operator")
+            if isinstance(data['conditions'], list):
+                query = '('
+
+                for i, condition in enumerate(data['conditions']):
+                    query += Todo.query_from_json(condition)
+                    if len(data['conditions']) > 1 and i != \
+                        len(data['conditions'])-1:
+                        query += ' ' + data['operator'] + ' '
+
+                query += ')'
+                return query
 
     @staticmethod
     def delete(todo, etag):
@@ -87,7 +123,7 @@ class Todo(db.Model):
 
         db.session.delete(todo)
         db.session.commit()
-        
+
         return True
 
     @staticmethod

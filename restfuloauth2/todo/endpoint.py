@@ -56,11 +56,12 @@ class TodoIndex(Resource):
         page = request.args.get('page', '1')
         max_results = request.args.get('max_results', '10')
         sort = request.args.get('sort', 'id-asc')
-        sort_direction_attribute = get_sort_attribute(sort)
+        sort_direction = get_sort_attribute(sort)
+        query = request.args.get('query', None)
 
         user = User.get_authorized()
-        todos = Todo.get_permitted_todos(user, sort_direction_attribute, page,
-            max_results)
+        todos = Todo.get_permitted_todos(user, sort_direction, page,
+            max_results, query)
 
         return Todo.serialize_list(todos)
 
