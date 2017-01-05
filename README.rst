@@ -85,6 +85,40 @@ below.
     -d "etag=DMwVytdmg3CtwDgbm9wWOINjX73Iev2n4NFkRsV7" \
     http://127.0.0.1:5000/todo/1
 
+A query operation is also available. To use it send an url-encoded JSON
+``query`` parameter to an item endpoint such as
+``http://127.0.0.1:5000/todo``. Valid column condition operators are
+``and`` and ``or``. As for column operators all ``=``, ``!=``, ``<``,
+``<=``, ``>``, ``>=`` and ``like`` are available.
+
+.. code:: json
+
+    {
+      "operator": "and",
+      "conditions": [
+        {
+          "column": "id",
+          "operator": "=",
+          "value": 3
+        },
+        {
+          "operator": "or",
+          "conditions": [
+            {
+              "column": "public",
+              "operator": "=",
+              "value": 1
+            },
+            {
+              "column": "user_id",
+              "operator": "=",
+              "value": 33
+            }
+          ]
+        }
+      ]
+    }
+
 Testing
 -------
 
