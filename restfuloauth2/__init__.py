@@ -15,11 +15,11 @@ def register_extensions(app):
 
 
 def register_blueprints(app):
-    app.register_blueprint(oauth, url_prefix='/oauth')
+    app.register_blueprint(oauth, url_prefix='/v1/oauth')
 
     api = Api(app, decorators=[provider.require_oauth()])
-    api.add_resource(TodoIndex, '/todo')
-    api.add_resource(TodoItem, '/todo/<todo_id>')
+    api.add_resource(TodoIndex, '/v1/todo')
+    api.add_resource(TodoItem, '/v1/todo/<todo_id>')
 
 
 def create_app(config=config.base_config):

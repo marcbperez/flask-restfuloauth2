@@ -22,20 +22,20 @@ def test_default_redirect(client):
 
 
 def test_create_token(client):
-    rv = client.post('/oauth/', follow_redirects=True, data={
+    rv = client.post('/v1/oauth/', follow_redirects=True, data={
         'submit': 'Add User',
         'username': 'userA',
         'password': 'passA',
     })
 
-    rv = client.post('/oauth/', follow_redirects=True, data={
+    rv = client.post('/v1/oauth/', follow_redirects=True, data={
         'submit': 'Add Client',
     })
 
     db.app = restfuloauth2.app
     oauth_client = Client.query.all()
 
-    rv = client.post('/oauth/token', follow_redirects=True, data={
+    rv = client.post('/v1/oauth/token', follow_redirects=True, data={
         'grant_type': 'password',
         'client_id': oauth_client[0].client_id,
         'username': 'userA',
