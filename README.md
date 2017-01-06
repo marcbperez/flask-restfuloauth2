@@ -40,14 +40,14 @@ the client id, username and password to generate a bearer token.
 curl -X POST -d \
 "grant_type=password&client_id=8diLQbKSkseuZ99Q3kwFAWugXjDvImrqTALeM7sd\
 &username=user&password=pass" \
-http://127.0.0.1:5000/oauth/token
+http://127.0.0.1:5000/v1/oauth/token
 ```
 
 The bearer token can now be used to access the user's protected data.
 
 ```bash
 curl -H "Authorization: Bearer nOVFSNUDoP2bC1ScMRuYz8zCXeTY8F" \
-http://127.0.0.1:5000/oauth/check
+http://127.0.0.1:5000/v1/oauth/check
 ```
 
 The example todo api is protected and will need a valid user, client and bearer
@@ -56,32 +56,32 @@ token. To list, add, modify and delete tasks see the script below.
 ```bash
 # GET the todo list
 curl -H "Authorization: Bearer yIMqTV5zOGQlRpIMBMpZnyHFMR0QW3" \
-http://127.0.0.1:5000/todo
+http://127.0.0.1:5000/v1/todo
 # Paginate and sort de todo list by ascending (asc) or descending (desc)
 curl -H "Authorization: Bearer yIMqTV5zOGQlRpIMBMpZnyHFMR0QW3" \
-"http://127.0.0.1:5000/todo?page=1&max_results=5&sort=id-desc"
+"http://127.0.0.1:5000/v1/todo?page=1&max_results=5&sort=id-desc"
 # CREATE a new todo
 curl -X POST -H "Authorization: Bearer yIMqTV5zOGQlRpIMBMpZnyHFMR0QW3" \
 -d "description=Remember the bread&public=0&done=0" \
-http://127.0.0.1:5000/todo
+http://127.0.0.1:5000/v1/todo
 # MODIFY a todo stating its etag
 curl -X PUT -H "Authorization: Bearer yIMqTV5zOGQlRpIMBMpZnyHFMR0QW3" \
 -d "etag=rz05FPx8qOIYJdmYZNLvcWupzh9qLlSoZnphpBFC\
     &description=Remember the butter&public=0&done=1" \
-http://127.0.0.1:5000/todo/1
+http://127.0.0.1:5000/v1/todo/1
 # GET a todo
 curl -H "Authorization: Bearer yIMqTV5zOGQlRpIMBMpZnyHFMR0QW3" \
-http://127.0.0.1:5000/todo/1
+http://127.0.0.1:5000/v1/todo/1
 # DELETE a todo stating its etag
 curl -X DELETE -H "Authorization: Bearer yIMqTV5zOGQlRpIMBMpZnyHFMR0QW3" \
 -d "etag=DMwVytdmg3CtwDgbm9wWOINjX73Iev2n4NFkRsV7" \
-http://127.0.0.1:5000/todo/1
+http://127.0.0.1:5000/v1/todo/1
 ```
 
 A query operation is also available. To use it send an url-encoded JSON `query`
-parameter to an item endpoint such as `http://127.0.0.1:5000/todo`. Valid column
-condition operators are `and` and `or`. As for column operators all `=`, `!=`,
-`<`, `<=`, `>`, `>=` and `like` are available.
+parameter to an item endpoint such as `http://127.0.0.1:5000/v1/todo`. Valid
+column condition operators are `and` and `or`. As for column operators all `=`,
+`!=`, `<`, `<=`, `>`, `>=` and `like` are available.
 
 ```json
 {
