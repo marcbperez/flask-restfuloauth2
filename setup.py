@@ -11,7 +11,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 # Main setup and configuration.
 setup(
     name='flask-restfuloauth2',
-    version='0.8.1',
+    version='0.9.0',
     packages=find_packages(),
     include_package_data=True,
     license='Apache License Version 2.0',
@@ -27,13 +27,15 @@ setup(
         'bcrypt',
         'pyopenssl',
         'flask-restful',
+        'flask-cors',
     ],
     setup_requires=[
         'pytest-runner',
+        'setuptools-pep8',
     ],
     tests_require=[
-        'pypdf2',
+        'pep8',
         'pytest-cov',
-        'pytest', # Keep at the end to avoid conflicts.
+        'pytest',  # Keep at the end to avoid conflicts.
     ],
 )

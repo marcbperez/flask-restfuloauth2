@@ -50,38 +50,38 @@ curl -H "Authorization: Bearer nOVFSNUDoP2bC1ScMRuYz8zCXeTY8F" \
 http://127.0.0.1:5000/v1/oauth/check
 ```
 
-The example todo api is protected and will need a valid user, client and bearer
+The example dummy api is protected and will need a valid user, client and bearer
 token. To list, add, modify and delete tasks see the script below.
 
 ```bash
-# GET the todo list
+# GET the dummy list.
 curl -H "Authorization: Bearer yIMqTV5zOGQlRpIMBMpZnyHFMR0QW3" \
-http://127.0.0.1:5000/v1/todo
-# Paginate and sort de todo list by ascending (asc) or descending (desc)
+http://127.0.0.1:5000/v1/dummy
+# Paginate and sort de dummy list by ascending (asc) or descending (desc).
 curl -H "Authorization: Bearer yIMqTV5zOGQlRpIMBMpZnyHFMR0QW3" \
-"http://127.0.0.1:5000/v1/todo?page=1&max_results=5&sort=id-desc"
-# CREATE a new todo
+"http://127.0.0.1:5000/v1/dummy?page=1&max_results=5&sort=id-desc"
+# CREATE a new dummy.
 curl -X POST -H "Authorization: Bearer yIMqTV5zOGQlRpIMBMpZnyHFMR0QW3" \
--d "description=Remember the bread&public=0&done=0" \
-http://127.0.0.1:5000/v1/todo
-# MODIFY a todo stating its etag
+-d "public=0" \
+http://127.0.0.1:5000/v1/dummy
+# MODIFY a dummy stating its etag.
 curl -X PUT -H "Authorization: Bearer yIMqTV5zOGQlRpIMBMpZnyHFMR0QW3" \
 -d "etag=rz05FPx8qOIYJdmYZNLvcWupzh9qLlSoZnphpBFC\
-    &description=Remember the butter&public=0&done=1" \
-http://127.0.0.1:5000/v1/todo/1
-# GET a todo
+    &public=1" \
+http://127.0.0.1:5000/v1/dummy/1
+# GET a dummy.
 curl -H "Authorization: Bearer yIMqTV5zOGQlRpIMBMpZnyHFMR0QW3" \
-http://127.0.0.1:5000/v1/todo/1
-# DELETE a todo stating its etag
+http://127.0.0.1:5000/v1/dummy/1
+# DELETE a dummy stating its etag.
 curl -X DELETE -H "Authorization: Bearer yIMqTV5zOGQlRpIMBMpZnyHFMR0QW3" \
 -d "etag=DMwVytdmg3CtwDgbm9wWOINjX73Iev2n4NFkRsV7" \
-http://127.0.0.1:5000/v1/todo/1
+http://127.0.0.1:5000/v1/dummy/1
 ```
 
-A query operation is also available. To use it send an url-encoded JSON `query`
-parameter to an item endpoint such as `http://127.0.0.1:5000/v1/todo`. Valid
-column condition operators are `and` and `or`. As for column operators all `=`,
-`!=`, `<`, `<=`, `>`, `>=` and `like` are available.
+A search operation is also available. To use it send an url-encoded JSON
+`search` parameter to an item endpoint such as `http://127.0.0.1:5000/v1/dummy`.
+Valid column condition operators are `and` and `or`. As for column operators all
+ `=`, `!=`, `<`, `<=`, `>`, `>=` and `like` are available.
 
 ```json
 {
@@ -101,9 +101,9 @@ column condition operators are `and` and `or`. As for column operators all `=`,
           "value": 1
         },
         {
-          "column": "user_id",
-          "operator": "=",
-          "value": 33
+          "column": "etag",
+          "operator": "!=",
+          "value": ""
         }
       ]
     }

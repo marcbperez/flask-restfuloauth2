@@ -1,4 +1,4 @@
-defaultTasks "watch", "dependencies", "build", "install", "test"
+defaultTasks "watch", "dependencies", "build", "install", "test", "pep8"
 
 def path = System.getProperty("user.dir")
 def srcDir = "${path}/restfuloauth2"
@@ -80,6 +80,15 @@ task test(type: Exec) {
   workingDir path
   commandLine "python"
   args = ["setup.py", "test"]
+
+  new ByteArrayOutputStream()
+}
+
+task pep8(type: Exec) {
+  description "Checks module against style conventions."
+  workingDir path
+  commandLine "python"
+  args = ["setup.py", "pep8"]
 
   new ByteArrayOutputStream()
 }
