@@ -27,13 +27,15 @@ setup(
         'bcrypt',
         'pyopenssl',
         'flask-restful',
+        'flask-cors',
     ],
     setup_requires=[
         'pytest-runner',
+        'setuptools-pep8',
     ],
     tests_require=[
-        'pypdf2',
+        'pep8',
         'pytest-cov',
-        'pytest', # Keep at the end to avoid conflicts.
+        'pytest',  # Keep at the end to avoid conflicts.
     ],
 )
