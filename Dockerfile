@@ -16,4 +16,6 @@ RUN apt-get update && apt-get install -y default-jdk gradle-3.4
 RUN gradle dependencies
 
 # Run the continuous build.
+ENV FLASK_APP="restfuloauth2"
+ENV SECRET_KEY="non-production-key"
 CMD gradle --continuous
