@@ -1,9 +1,16 @@
-defaultTasks "watch", "dependencies", "build", "install", "test", "pep8"
+defaultTasks "wrapper", "watch", "dependencies", "build", "install", "test",
+  "pep8"
 
+def aptPackages = ["libspock-java", "python-pip", "pandoc", "libssl-dev",
+  "libffi-dev"]
 def path = System.getProperty("user.dir")
 def srcDir = "${path}/restfuloauth2"
 def testDir = "${path}/tests"
-def aptPackages = ["python-pip", "pandoc", "libssl-dev", "libffi-dev"]
+
+task wrapper(type: Wrapper) {
+  description "Creates the project wrapper."
+  gradleVersion = "3.4.1"
+}
 
 task watch(type: Exec) {
   def sourceFiles = fileTree(srcDir) {
@@ -14,7 +21,7 @@ task watch(type: Exec) {
     exclude "**/*.pyc", "**/__pycache__/*"
   }
 
-  description "Watches for canges, use 'gradle --continuous'."
+  description "Watches for canges."
   inputs.files(sourceFiles, testFiles)
   commandLine "true"
 
@@ -31,7 +38,16 @@ task dependencies() {
   }
 }
 
-task dependenciesApt(type: Exec) {
+task aptUpdate(type: Exec) {
+  description "Updates APT repository information."
+  workingDir path
+  commandLine "apt-get"
+  args "update"
+
+  new ByteArrayOutputStream()
+}
+
+task dependenciesApt(type: Exec, dependsOn: aptUpdate) {
   description "Installs APT dependencies."
   workingDir path
   commandLine "apt-get"
@@ -75,7 +91,30 @@ task install(type: Exec, dependsOn: upgradePip) {
   new ByteArrayOutputStream()
 }
 
-task test(type: Exec) {
+task test() {
+  description "Runs all test cases."
+
+  dependsOn {
+    tasks.findAll { task ->
+      task.name.startsWith("test") && !task.name.equals("test")
+    }
+  }
+}
+
+fileTree(dir: "${testDir}", include: "**/*.groovy").each { File testFile ->
+  def fileName = testFile.getName().split("\\.")[0]
+
+  task "test${fileName}"(type: Exec) {
+    description "Runs the ${fileName} case."
+    workingDir path
+    commandLine "groovy"
+    args "-cp", "/usr/share/java/spock-core.jar", testFile
+
+    new ByteArrayOutputStream()
+  }
+}
+
+task testPythonModule(type: Exec) {
   description "Tests this Python module."
   workingDir path
   commandLine "python"
