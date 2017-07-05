@@ -30,7 +30,7 @@ class Query(object):
         return operator in cls.VALID_COLUMN_OPERATORS
 
     @classmethod
-    def from_json_or_abort(cls, data):
+    def from_json_or_abort(cls, model, data):
         """Recursive function that generates a text query from JSON data."""
         if isinstance(data, basestring):
             # If data is still a string load it as JSON.
@@ -44,14 +44,14 @@ class Query(object):
             # If the value is a string concat and return a quoted text query.
             if isinstance(data[cls.VALUE_REFERENCE], basestring):
                 return (
-                    data[cls.COLUMN_REFERENCE] +
-                    data[cls.OPERATOR_REFERENCE] + '"' +
-                    str(data[cls.VALUE_REFERENCE]) + '"'
+                    model.__mapper__.columns[data[cls.COLUMN_REFERENCE]].name +
+                    ' ' + data[cls.OPERATOR_REFERENCE] + ' ' +
+                    '"' + str(data[cls.VALUE_REFERENCE]) + '"'
                 )
             # Concat and return a text query.
             return (
-                data[cls.COLUMN_REFERENCE] +
-                data[cls.OPERATOR_REFERENCE] +
+                model.__mapper__.columns[data[cls.COLUMN_REFERENCE]].name +
+                ' ' + data[cls.OPERATOR_REFERENCE] + ' ' +
                 str(data[cls.VALUE_REFERENCE])
             )
         # If conditions and an operator are found we have a conditional.
@@ -64,9 +64,9 @@ class Query(object):
             if isinstance(data[cls.CONDITIONS_REFERENCE], list):
                 # Open group parenthesis.
                 query = '('
-                # Make recursive calls, resolve and concat childs.
+                # Make recursive calls, resolve and concat.
                 for i, condition in enumerate(data[cls.CONDITIONS_REFERENCE]):
-                    query += cls.from_json_or_abort(condition)
+                    query += cls.from_json_or_abort(model, condition)
                     if (len(data[cls.CONDITIONS_REFERENCE]) > 1 and
                             i != len(data[cls.CONDITIONS_REFERENCE])-1):
                         query += ' ' + data[cls.OPERATOR_REFERENCE] + ' '
@@ -76,7 +76,7 @@ class Query(object):
 
     @classmethod
     def get_item_or_abort(cls, item_cls, item_id, user):
-        """Gets an item, if permitted, given the model and user's id."""
+        """Gets an item, if permitted, or aborts."""
         model = item_cls.get_permitted(item_id, user)
         if not model:
             abort(404, message=cls.ITEM_NOT_FOUND)

@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file. This
 project adheres to [Semantic Versioning](http://semver.org).
 
+## Unreleased
+
+### Added
+
+  - Test cache folder to Git ignore list.
+  - Dockerfile for production environments.
+  - Builder Dockerfile for development environments.
+  - Database migration control.
+  - API manifest with Swagger.
+
+### Changed
+
+  - README with deployment instructions and revised usage.
+  - Package set-up file and dependency list.
+  - Gradle wrapper for this project.
+  - Package tests dividing the main application and its models.
+  - Database query, default model and OAuth bundle.
+
 ## 0.10.0 - 2017-04-14
 
 ### Added

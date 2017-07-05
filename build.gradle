@@ -1,11 +1,12 @@
-defaultTasks "wrapper", "watch", "dependencies", "build", "install", "test",
-  "pep8"
+defaultTasks "wrapper", "watch", "dependencies", "build", "install", "migrate",
+  "test", "run"
 
 def aptPackages = ["libspock-java", "python-pip", "pandoc", "libssl-dev",
   "libffi-dev"]
 def path = System.getProperty("user.dir")
 def srcDir = "${path}/restfuloauth2"
 def testDir = "${path}/tests"
+def migrationsDir = "${path}/migrations"
 
 task wrapper(type: Wrapper) {
   description "Creates the project wrapper."
@@ -18,10 +19,10 @@ task watch(type: Exec) {
   }
 
   def testFiles = fileTree(testDir) {
-    exclude "**/*.pyc", "**/__pycache__/*"
+    exclude "**/*.pyc", "**/__pycache__", "**/__pycache__/*"
   }
 
-  description "Watches for canges."
+  description "Watches for changes."
   inputs.files(sourceFiles, testFiles)
   commandLine "true"
 
@@ -91,6 +92,46 @@ task install(type: Exec, dependsOn: upgradePip) {
   new ByteArrayOutputStream()
 }
 
+task dbInit(type: Exec) {
+  description "Initializes the database."
+  workingDir path
+  commandLine "flask"
+  args = ["db", "init"]
+
+  new ByteArrayOutputStream()
+}
+
+task dbMigrate(type: Exec) {
+  description "Migrates the database."
+  workingDir path
+  commandLine "flask"
+  args = ["db", "migrate"]
+
+  ignoreExitValue true
+  new ByteArrayOutputStream()
+}
+
+task dbUpgrade(type: Exec) {
+  description "Upgrades the database."
+  workingDir path
+  commandLine "flask"
+  args = ["db", "upgrade"]
+
+  ignoreExitValue true
+  new ByteArrayOutputStream()
+}
+
+task migrate() {
+  description "Initializes, migrates and upgrades the database."
+
+  if (! new File(migrationsDir).exists()) {
+    dependsOn dbInit
+  }
+
+  dependsOn dbMigrate
+  dependsOn dbUpgrade
+}
+
 task test() {
   description "Runs all test cases."
 
@@ -123,11 +164,26 @@ task testPythonModule(type: Exec) {
   new ByteArrayOutputStream()
 }
 
-task pep8(type: Exec) {
+task testPep8(type: Exec) {
   description "Checks module against style conventions."
   workingDir path
   commandLine "python"
   args = ["setup.py", "pep8"]
 
   new ByteArrayOutputStream()
+}
+
+task run() {
+  description "Runs the project from a development web server."
+  def command = "flask run --host=0.0.0.0"
+  def builder = new ProcessBuilder(command.split(" ")).directory(new File(path))
+  def process = null
+
+  doFirst {
+    if (process != null) process.destroy()
+  }
+
+  doLast {
+    process = builder.start()
+  }
 }

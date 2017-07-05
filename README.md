@@ -10,22 +10,20 @@ commands will do the job on most Debian based Linux distributions.
 ```bash
 git clone https://github.com/marcbperez/flask-restfuloauth2
 cd flask-restfuloauth2
-sudo ./gradlew
+export FLASK_APP="restfuloauth2"
+export SECRET_KEY="non-production-key"
+export SQLALCHEMY_DATABASE_URI="sqlite:///db.sqlite3"
+sudo -HE ./gradlew
 ```
 
 ## Usage
 
-To start the service set the environment variables and run flask, it will be
-available at `http://127.0.0.1:5000`.
+To start the service set the environment variables and run the Gradle wrapper as
+shown above. The Swagger manifest can be found on `http://127.0.0.1:5000` and
+its UI can be accessed via `http://127.0.0.1:5000/api`.
 
-```bash
-export FLASK_APP="restfuloauth2"
-export SECRET_KEY="non-production-key"
-sudo -HE flask run
-```
-
-First, access `http://127.0.0.1:5000` and create a user and api client. Then use
-the client id, username and password to generate a bearer token.
+First, access `http://127.0.0.1:5000/oauth/management` and create a user and api
+client. Then use the client id, username and password to generate a bearer token.
 
 ```bash
 curl -X POST -d \
@@ -110,7 +108,7 @@ integration and development use docker-compose. This is recommended to keep the
 system clean while the project is built every time the sources change.
 
 ```bash
-sudo docker-compose up
+sudo docker-compose up builder
 ```
 
 For continuous integration and development without any dependencies use the
@@ -126,6 +124,15 @@ integration tasks and alike. Build the image with `sudo docker build .` and run
 a new container with it. Information on how to install Docker and docker-compose
 can be found in their [official page][install-docker-compose]. A similar
 installation guide is available [for Gradle][install-gradle].
+
+## Deployment
+
+To deploy this service set the `SECRET_KEY` and `SQLALCHEMY_DATABASE_URI`
+Docker environment variables and run the default Dockerfile.
+
+```bash
+sudo docker-compose up runner
+```
 
 ## Troubleshooting
 
