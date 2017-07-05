@@ -2,7 +2,7 @@ from . import db
 from .query import Query
 from flask_restful import reqparse
 from werkzeug.security import gen_salt
-from datetime import datetime
+from datetime import datetime, time
 from sqlalchemy import text
 from sqlalchemy.ext.declarative import declared_attr
 
@@ -50,17 +50,21 @@ class Model(object):
     @classmethod
     def add_parser_etag(cls, parser):
         """Adds etag to parser validation."""
-        parser.add_argument('etag', required=True, help='Model etag.')
+        parser.add_argument(
+            'etag', required=True, location=['form', 'json'],
+            help='Model etag.')
 
     @classmethod
     def add_parser_args(cls, parser):
         """Adds model parameters to parser validation."""
-        parser.add_argument('public', required=True, help='Model visibility.')
+        parser.add_argument(
+            'public', required=True, location=['form', 'json'],
+            help='Model visibility.')
 
     @classmethod
     def parse_post_arguments(cls, strict=True):
         """Adds validation for the post method."""
-        parser = reqparse.RequestParser()
+        parser = reqparse.RequestParser(bundle_errors=True)
         cls.add_parser_args(parser)
 
         return parser.parse_args(strict=strict)
@@ -68,7 +72,7 @@ class Model(object):
     @classmethod
     def parse_put_arguments(cls, strict=True):
         """Adds validation for the put method."""
-        parser = reqparse.RequestParser()
+        parser = reqparse.RequestParser(bundle_errors=True)
         cls.add_parser_etag(parser)
         cls.add_parser_args(parser)
 
@@ -86,16 +90,16 @@ class Model(object):
     def get_permitted(cls, id, user):
         """Returns an item if public or if the user is the owner."""
         return cls.query.filter(
-            cls.id == id, ((cls.public) | (cls.user_id == user.id))).first()
+            cls.id == id, (cls.public | (cls.user_id == user.id))).first()
 
     @classmethod
     def get_permitted_models(
             cls, user, sort_direction, page, max_results, search):
         """Returns a list of items if public or if the user is the owner."""
-        models = cls.query.filter((cls.public) | (cls.user_id == user.id))
+        models = cls.query.filter(cls.public | (cls.user_id == user.id))
         # Generate and filter by text query if search contains JSON string.
         if search:
-            text_search = Query.from_json_or_abort(search)
+            text_search = Query.from_json_or_abort(cls, search)
             models = models.filter(text(text_search))
         # Sort and paginate result.
         return models.order_by(sort_direction).paginate(
@@ -120,7 +124,7 @@ class Model(object):
 
         model.etag = gen_salt(40)
         model.updated = datetime.utcnow()
-        model.public = public == '1'
+        model.public = cls.boolean(public)
         db.session.commit()
 
         return model
@@ -132,8 +136,23 @@ class Model(object):
         model.user_id = user.id
         model.etag = gen_salt(40)
         model.created = model.updated = datetime.utcnow()
-        model.public = public == '1'
+        model.public = cls.boolean(public)
         db.session.add(model)
         db.session.commit()
 
         return model
+
+    @classmethod
+    def boolean(cls, parameter):
+        """Validates a boolean against a form or JSON parameter."""
+        return parameter in ['1', 'True']
+
+    @classmethod
+    def time_to_string(cls, t):
+        """Gets a time and outputs a string."""
+        return None if t is None else time.strftime(t, '%H:%M:%S')
+
+    @classmethod
+    def string_to_time(cls, s):
+        """Gets a string and outputs a time."""
+        return None if s is None else datetime.strptime(s, '%H:%M:%S').time()

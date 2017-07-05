@@ -111,11 +111,11 @@ class Token(db.Model):
     @staticmethod
     def save(token, request, *args, **kwargs):
         """Creates a new token per client and user."""
-        toks = Token.query.filter_by(
+        tokens = Token.query.filter_by(
             client_id=request.client.client_id, user_id=request.user.id)
 
         # Make sure there is only one token for every client and user.
-        [db.session.delete(t) for t in toks]
+        [db.session.delete(t) for t in tokens]
 
         expires_in = token.pop('expires_in')
         expires = datetime.utcnow() + timedelta(seconds=expires_in)
