@@ -14,23 +14,22 @@ distributions.
 
     git clone https://github.com/marcbperez/flask-restfuloauth2
     cd flask-restfuloauth2
-    sudo ./gradlew
+    export FLASK_APP="restfuloauth2"
+    export SECRET_KEY="non-production-key"
+    export SQLALCHEMY_DATABASE_URI="sqlite:///db.sqlite3"
+    sudo -HE ./gradlew
 
 Usage
 -----
 
-To start the service set the environment variables and run flask, it
-will be available at ``http://127.0.0.1:5000``.
+To start the service set the environment variables and run the Gradle
+wrapper as shown above. The Swagger manifest can be found on
+``http://127.0.0.1:5000`` and its UI can be accessed via
+``http://127.0.0.1:5000/api``.
 
-.. code:: bash
-
-    export FLASK_APP="restfuloauth2"
-    export SECRET_KEY="non-production-key"
-    sudo -HE flask run
-
-First, access ``http://127.0.0.1:5000`` and create a user and api
-client. Then use the client id, username and password to generate a
-bearer token.
+First, access ``http://127.0.0.1:5000/oauth/management`` and create a
+user and api client. Then use the client id, username and password to
+generate a bearer token.
 
 .. code:: bash
 
@@ -120,7 +119,7 @@ time the sources change.
 
 .. code:: bash
 
-    sudo docker-compose up
+    sudo docker-compose up builder
 
 For continuous integration and development without any dependencies use
 the Gradle wrapper. This is the best option if the wrapper is available
@@ -139,6 +138,17 @@ found in their `official
 page <https://docs.docker.com/compose/install/>`__. A similar
 installation guide is available `for
 Gradle <https://gradle.org/install>`__.
+
+Deployment
+----------
+
+To deploy this service set the ``SECRET_KEY`` and
+``SQLALCHEMY_DATABASE_URI`` Docker environment variables and run the
+default Dockerfile.
+
+.. code:: bash
+
+    sudo docker-compose up runner
 
 Troubleshooting
 ---------------
