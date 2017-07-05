@@ -1,0 +1,32 @@
+Updates a Dummy item
+---
+
+tags:
+  - Dummy
+
+consumes:
+  - application/json
+
+parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+  - name: dummy_id
+    in: path
+    type: integer
+    required: true
+    default: 1
+  - name: body
+    in: body
+    required: true
+    schema:
+      $ref: '#/definitions/Dummy'
+
+responses:
+  201:
+    description: A Dummy item
+    schema:
+      $ref: '#/definitions/Dummy'
+  404:
+    description: Item not found

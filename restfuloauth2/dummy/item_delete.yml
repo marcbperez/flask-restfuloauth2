@@ -1,0 +1,22 @@
+Deletes a Dummy item
+---
+
+tags:
+  - Dummy
+
+parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+  - name: dummy_id
+    in: path
+    type: integer
+    required: true
+    default: 1
+
+responses:
+  204:
+    description: Item successfully deleted (no content)
+  404:
+    description: Item not found
