@@ -1,0 +1,25 @@
+Creates a new Dummy item
+---
+
+tags:
+  - Dummy
+
+consumes:
+  - application/json
+
+parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+  - name: body
+    in: body
+    required: true
+    schema:
+      $ref: '#/definitions/Dummy'
+
+responses:
+  201:
+    description: A Dummy item
+    schema:
+      $ref: '#/definitions/Dummy'

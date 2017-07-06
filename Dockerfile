@@ -1,8 +1,12 @@
-FROM marcbperez/docker-gradle
+FROM python:2.7
 MAINTAINER marcbperez@users.noreply.github.com
 
-ADD . /home/builder
-WORKDIR /home/builder
+EXPOSE 5000
+
+ADD . /home/runner
+WORKDIR /home/runner
+
 ENV FLASK_APP="restfuloauth2"
-ENV SECRET_KEY="non-production-key"
-CMD gradle --continuous
+
+RUN pip install -e .
+CMD flask run --host=0.0.0.0

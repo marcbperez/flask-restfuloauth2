@@ -2,6 +2,12 @@ version: '2'
 
 services:
   builder:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile-builder
     volumes:
       - .:/home/builder
+  runner:
+    build: .
+    volumes:
+      - .:/home/runner

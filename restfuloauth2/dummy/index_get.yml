@@ -1,0 +1,58 @@
+Returns a Dummy collection
+---
+
+tags:
+  - Dummy
+
+definitions:
+  DummyCollection:
+    type: array
+    items:
+      $ref: '#/definitions/Dummy'
+  Dummy:
+    type: object
+    required:
+      - public
+    properties:
+      id:
+        type: integer
+      etag:
+        type: string
+        minLength: 40
+        maxLength: 40
+      created:
+        type: string
+      updated:
+        type: string
+      user_id:
+        type: integer
+      public:
+        type: boolean
+
+parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+  - name: page
+    in: query
+    type: integer
+    required: false
+  - name: max_results
+    in: query
+    type: integer
+    required: false
+  - name: sort
+    in: query
+    type: string
+    required: false
+  - name: search
+    in: query
+    type: string
+    required: false
+
+responses:
+  200:
+    description: A Dummy collection
+    schema:
+      $ref: '#/definitions/DummyCollection'

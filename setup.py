@@ -11,7 +11,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 # Main setup and configuration.
 setup(
     name='flask-restfuloauth2',
-    version='0.10.0',
+    version='0.11.0',
     packages=find_packages(),
     include_package_data=True,
     license='Apache License Version 2.0',
@@ -21,16 +21,18 @@ setup(
     author='marcbperez',
     author_email='marcbperez@users.noreply.github.com',
     install_requires=[
-        'flask',
-        'flask-sqlalchemy',
-        'flask-oauthlib',
         'bcrypt',
-        'pyopenssl',
-        'flask-restful',
+        'flasgger',
+        'flask',
         'flask-cors',
+        'flask-migrate',
+        'flask-oauthlib',
+        'flask-restful',
+        'flask-sqlalchemy',
+        'pyopenssl',
     ],
     setup_requires=[
-        'pytest-runner',
+        'pytest-runner<=3.9',
         'setuptools-pep8',
     ],
     tests_require=[

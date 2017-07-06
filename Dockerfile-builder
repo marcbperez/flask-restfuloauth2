@@ -1,0 +1,14 @@
+FROM marcbperez/docker-gradle
+MAINTAINER marcbperez@users.noreply.github.com
+
+EXPOSE 5000
+
+ADD . /home/builder
+WORKDIR /home/builder
+
+ENV FLASK_DEBUG=1
+ENV FLASK_APP="restfuloauth2"
+ENV SECRET_KEY="non-production-key"
+ENV SQLALCHEMY_DATABASE_URI="sqlite:////home/builder/db.sqlite3"
+
+CMD gradle --continuous
